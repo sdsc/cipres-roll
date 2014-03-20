@@ -71,19 +71,18 @@ COMPILERSETUP = \
     module load $(ROLLCOMPILER)/$${latestModule}; \
   fi
 
-CFLAGS =  -DOPENMP -fopenmp -O3 -finline-functions -funroll-loops -Wall -lm
-DOUBLE = 
+CFLAGS =  -DOPENMP -fopenmp -O3 -finline-functions -funroll-loops -Wall 
 LDFLAGS = -lm
 CCOMP = gcc
 ifeq ("$(ROLLCOMPILER)", "intel")
   CCOMP = icc
-  DOUBLE = 
-  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall -lm
+  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall
 endif
 ifeq ("$(ROLLCOMPILER)", "pgi")
   CCOMP = pgcc
-  CFLAGS = -DOPENMP -mp -O3  -Mautoinline -Munroll -Winform=inform -lm
+  CFLAGS = -DOPENMP -mp -O3  -Mautoinline -Munroll -Winform=inform
 endif
+CFLAGS_DOUBLE = -DUSE_DOUBLE $(CFLAGS)
 
 
 build: $(SRC_DIRS)
@@ -92,7 +91,8 @@ build: $(SRC_DIRS)
 	  export CC=$(CCOMP); \
 	  export CFLAGS="$(CFLAGS)"; \
           cd $(SOURCE_DIR); \
-          $(CCOMP) -o fasttree $(CFLAGS)  FastTree.c \
+          $(CCOMP) -o fasttree.single $(CFLAGS)  FastTree.c $(LDFLAGS); \
+          $(CCOMP) -o fasttree.double $(CFLAGS_DOUBLE)  FastTree.c $(LDFLAGS) \
 	)
 
 install::
@@ -100,7 +100,7 @@ install::
 	mkdir -p $(REDHAT.ROOT)/src/build-cipres-modules
 	( \
 	  cd $(SOURCE_DIR) ; \
-	  cp fasttree $(ROOT)/$(PKGROOT)/bin \
+	  cp fasttree.* $(ROOT)/$(PKGROOT)/bin \
 	)
 	cat fasttree.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/fasttree!g;s!VERSION!$(VERSION)!g;s!ROLLCOMPILER!$(ROLLCOMPILER)!g" \
           > $(REDHAT.ROOT)/src/build-cipres-modules/fasttree.module
