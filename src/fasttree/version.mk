@@ -1,6 +1,6 @@
 VERSION = 2.1.7
 NAME    = fasttree_$(ROLLCOMPILER)
-RELEASE = 2
+RELEASE = 0
 PKGROOT = /opt/fasttree
 
 SOURCE_SUFFIX      = tar.gz

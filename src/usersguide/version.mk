@@ -1,7 +1,7 @@
 ROLL			= cipres
 VERSION			= 1.0
 NAME    		= roll-$(ROLL)-usersguide
-RELEASE			= 2
+RELEASE			= 0
 
 SUMMARY_COMPATIBLE	= $(VERSION)
 SUMMARY_MAINTAINER	= Rocks Group
