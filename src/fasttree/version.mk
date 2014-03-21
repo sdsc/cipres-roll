@@ -5,6 +5,7 @@ PKGROOT = /opt/fasttree
 
 SOURCE_SUFFIX      = tar.gz
 SOURCE_NAME        = fasttree
+SRC_SUBDIR         = fasttree
 SOURCE_PKG         = $(SOURCE_NAME)-$(VERSION).$(SOURCE_SUFFIX)
 SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 RPM.EXTRAS         = AutoReq:No
