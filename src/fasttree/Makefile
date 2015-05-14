@@ -94,7 +94,7 @@ build: $(SRC_DIRS)
 	  export CC=$(CCOMP); \
 	  export CFLAGS="$(CMFLAGS)"; \
           cd $(SOURCE_DIR); \
-          $(CCOMP) -o FastTreeMP $(CFLAGS) $(CMPFLAGS)  FastTree.c $(LDFLAGS) \
+          $(CCOMP) -o FastTreeMP $(CFLAGS) $(CMPFLAGS)  FastTree.c $(LDFLAGS); \
           $(CCOMP) -o FastTree $(CFLAGS)  FastTree.c $(LDFLAGS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
