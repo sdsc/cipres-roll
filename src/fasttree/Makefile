@@ -68,7 +68,7 @@ LDFLAGS = -lm
 CCOMP = gcc
 ifeq ("$(COMPILERNAME)", "intel")
   CCOMP = icc
-  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall -lm -xHost
+  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall -xHost
 endif
 ifeq ("$(COMPILERNAME)", "pgi")
   CCOMP = pgcc
