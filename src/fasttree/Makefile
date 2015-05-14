@@ -63,18 +63,20 @@ include Rules.mk
 include $(SDSCDEVEL)/Pull.mk
 include $(SDSCDEVEL)/Rules.mk
 
-CFLAGS =  -DOPENMP -fopenmp -O3 -finline-functions -funroll-loops -Wall 
+CFLAGS =  -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall 
+CMPFLAGS = -DOPENMP -fopenmp
 LDFLAGS = -lm
 CCOMP = gcc
 ifeq ("$(COMPILERNAME)", "intel")
   CCOMP = icc
-  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall -xHost
+  CFLAGS = -DUSE_DOUBLE -O3  -finline-functions -funroll-loops -Wall -xHost
+  CMPFLAGS = -DOPENMP -openmp
 endif
 ifeq ("$(COMPILERNAME)", "pgi")
   CCOMP = pgcc
-  CFLAGS = -DOPENMP -mp -O3  -Mautoinline -Munroll -Winform=inform
+  CFLAGS = -DUSE_DOUBLE -O3  -Mautoinline -Munroll -Winform=inform
+  CMPFLAGS = -DOPENMP -mp
 endif
-CFLAGS_DOUBLE = -DUSE_DOUBLE $(CFLAGS)
 
 
 $(NAME).spec: DESCRIPTION
@@ -90,10 +92,10 @@ build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
 	  export CC=$(CCOMP); \
-	  export CFLAGS="$(CFLAGS)"; \
+	  export CFLAGS="$(CMFLAGS)"; \
           cd $(SOURCE_DIR); \
-          $(CCOMP) -o fasttree.single $(CFLAGS)  FastTree.c $(LDFLAGS); \
-          $(CCOMP) -o fasttree.double $(CFLAGS_DOUBLE)  FastTree.c $(LDFLAGS) \
+          $(CCOMP) -o FastTreeMP $(CFLAGS) $(CMPFLAGS)  FastTree.c $(LDFLAGS) \
+          $(CCOMP) -o FastTree $(CFLAGS)  FastTree.c $(LDFLAGS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 
