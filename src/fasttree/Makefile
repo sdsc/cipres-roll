@@ -99,7 +99,6 @@ build: $(SRC_DIRS)
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
-	mkdir -p $(REDHAT.ROOT)/src/build-cipres-modules
 	( \
 	  cd $(SOURCE_DIR) ; \
 	  cp fasttree.* $(ROOT)/$(PKGROOT)/bin \
