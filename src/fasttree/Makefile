@@ -103,7 +103,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	( \
 	  cd $(SOURCE_DIR) ; \
-	  cp fasttree.* $(ROOT)/$(PKGROOT)/bin \
+	  cp FastTree FastTreeMP  $(ROOT)/$(PKGROOT)/bin \
 	)
 	@echo "::: Package $(NAME) install complete :::"
 clean::
