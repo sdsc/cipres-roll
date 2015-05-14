@@ -17,9 +17,7 @@
 	$Log$
 	</changelog>
 
-	<package>fasttree_ROLLCOMPILER</package>
+	<package>fasttree</package>
 	<package>cipres-modules</package>
-	<package>roll-cipres-usersguide</package>
-
 
 </kickstart>

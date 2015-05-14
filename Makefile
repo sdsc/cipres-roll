@@ -3,12 +3,11 @@
 #
 # @Copyright@
 # 
-# 				Rocks(r)
+# 				Rocks(tm)
 # 		         www.rocksclusters.org
-# 		         version 5.6 (Emerald Boa)
-# 		         version 6.1 (Emerald Boa)
+# 		        version 4.3 (Mars Hill)
 # 
-# Copyright (c) 2000 - 2013 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +25,7 @@
 # 3. All advertising and press materials, printed or electronic, mentioning
 # features or use of this software must display the following acknowledgement: 
 # 
-# 	"This product includes software developed by the Rocks(r)
+# 	"This product includes software developed by the Rocks(tm)
 # 	Cluster Group at the San Diego Supercomputer Center at the
 # 	University of California, San Diego and its contributors."
 # 
@@ -54,37 +53,26 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
-#
-# $Log$
-#
 
+# NOTE: although the package Makefile supports a ROLLCOMPILER variable, we've
+# only been able to build successfully using the gnu compilers.
 ifndef ROLLCOMPILER
   ROLLCOMPILER = gnu
+endif
+
+ifndef ROLLMPI
+  ROLLMPI = rocks-openmpi
 endif
 
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
 default:
-	for i in `ls nodes/*.in`; do \
-	  export o=`echo $$i | sed 's/\.in//'`; \
-	  cp $$i $$o; \
-	  for c in $(ROLLCOMPILER); do \
-	    perl -pi -e 'print and s/ROLLCOMPILER/'$${c}'/g if m/ROLLCOMPILER/' $$o; \
-	  done; \
-	  perl -pi -e '$$_ = "" if m/ROLLCOMPILER/' $$o; \
-	done
 	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
 
 clean::
 	rm -f _arch bootstrap.py
 
-cvsclean: clean
-	for i in `ls nodes/*.in`; do \
-	  export o=`echo $$i | sed 's/\.in//'`; \
-	  rm -f $$o; \
-	done
-	rm -fr RPMS SRPMS src/build-*
-
-distclean:: cvsclean
+distclean:: clean
+	rm -fr RPMS SRPMS
 	-rm -f build.log

@@ -56,44 +56,46 @@
 #
 # $Log$
 
-REDHAT.ROOT = $(PWD)/../../
-RPM.EXTRAS=%define __os_install_post /usr/lib/rpm/brp-compress
+REDHAT.ROOT = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
-include pull.mk
-
-ROLLCOMPILER=gnu
-
-COMPILERSETUP = \
-  if test -e /etc/profile.d/modules.sh; then \
-    . /etc/profile.d/modules.sh; \
-    latestModule=`module avail 2>&1 | grep -o '$(ROLLCOMPILER)/[^ (]*' | sed 's/$(ROLLCOMPILER).//' | sort -t. -k1,1n -k2,2n -k3,3n | tail -1`; \
-    module load $(ROLLCOMPILER)/$${latestModule}; \
-  fi
+include Rules.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
 CFLAGS =  -DOPENMP -fopenmp -O3 -finline-functions -funroll-loops -Wall 
 LDFLAGS = -lm
 CCOMP = gcc
-ifeq ("$(ROLLCOMPILER)", "intel")
+ifeq ("$(COMPILERNAME)", "intel")
   CCOMP = icc
-  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall
+  CFLAGS = -DOPENMP -openmp -O3  -finline-functions -funroll-loops -Wall -lm -xHost
 endif
-ifeq ("$(ROLLCOMPILER)", "pgi")
+ifeq ("$(COMPILERNAME)", "pgi")
   CCOMP = pgcc
   CFLAGS = -DOPENMP -mp -O3  -Mautoinline -Munroll -Winform=inform
 endif
 CFLAGS_DOUBLE = -DUSE_DOUBLE $(CFLAGS)
 
 
+$(NAME).spec: DESCRIPTION
+
+DESCRIPTION:
+	$(MODULE_LOAD_CC); \
+	( \
+	  $(DESCRIBE_PKG); \
+	  $(DESCRIBE_CC); \
+	) > $@
+
 build: $(SRC_DIRS)
 	( \
-          $(COMPILERSETUP); \
+	  $(MODULE_LOAD_CC); \
 	  export CC=$(CCOMP); \
 	  export CFLAGS="$(CFLAGS)"; \
           cd $(SOURCE_DIR); \
           $(CCOMP) -o fasttree.single $(CFLAGS)  FastTree.c $(LDFLAGS); \
           $(CCOMP) -o fasttree.double $(CFLAGS_DOUBLE)  FastTree.c $(LDFLAGS) \
 	)
+	@echo "::: Package $(NAME) build complete :::"
 
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
@@ -102,8 +104,6 @@ install::
 	  cd $(SOURCE_DIR) ; \
 	  cp fasttree.* $(ROOT)/$(PKGROOT)/bin \
 	)
-	cat fasttree.module | perl -pi -e "s!MODULEROOT!/opt/modulefiles/applications/fasttree!g;s!VERSION!$(VERSION)!g;s!ROLLCOMPILER!$(ROLLCOMPILER)!g" \
-          > $(REDHAT.ROOT)/src/build-cipres-modules/fasttree.module
-
+	@echo "::: Package $(NAME) install complete :::"
 clean::
-	rm -rf $(SOURCE_DIR) intel .subversion .svn
+	rm -rf $(SOURCE_DIR) _arch DESCRIPTION

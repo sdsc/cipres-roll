@@ -1,13 +1,22 @@
-VERSION = 2.1.7
-NAME    = fasttree_$(ROLLCOMPILER)
-RELEASE = 0
-PKGROOT = /opt/fasttree
+ifndef ROLLCOMPILER
+  ROLLCOMPILER = gnu
+endif
+COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
-SOURCE_SUFFIX      = tar.gz
-SOURCE_NAME        = fasttree
-SRC_SUBDIR         = fasttree
-SOURCE_PKG         = $(SOURCE_NAME)-$(VERSION).$(SOURCE_SUFFIX)
-SOURCE_DIR         = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
-RPM.EXTRAS         = AutoReq:No
+NAME           = sdsc-fasttree
+VERSION        = 2.1.8
+RELEASE        = 0
 
-TAR_GZ_PKGS        = $(SOURCE_PKG)
+SRC_SUBDIR     = fasttree
+
+SOURCE_NAME    = fasttree
+SOURCE_SUFFIX  = tar.gz
+SOURCE_VERSION = 2.1.8
+SOURCE_PKG     = $(SOURCE_NAME)-$(SOURCE_VERSION).$(SOURCE_SUFFIX)
+SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
+
+PKGROOT        = /opt/fasttree
+
+TAR_GZ_PKGS    = $(SOURCE_PKG)
+
+RPM.EXTRAS     = AutoReq:No
