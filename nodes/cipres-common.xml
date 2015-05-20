@@ -17,7 +17,7 @@
 	$Log$
 	</changelog>
 
-	<package>fasttree</package>
-	<package>cipres-modules</package>
+	<package>sdsc-fasttree</package>
+	<package>sdsc-cipres-modules</package>
 
 </kickstart>
