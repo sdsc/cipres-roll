@@ -18,6 +18,6 @@
 	</changelog>
 
 	<package>sdsc-fasttree</package>
-	<package>sdsc-cipres-modules</package>
+	<package>sdsc-fastree-modules</package>
 
 </kickstart>
