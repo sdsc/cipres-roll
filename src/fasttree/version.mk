@@ -5,7 +5,7 @@ COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-fasttree
 VERSION        = 2.1.8
-RELEASE        = 0
+RELEASE        = 1
 
 SRC_SUBDIR     = fasttree
 
