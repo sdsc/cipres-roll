@@ -91,8 +91,6 @@ DESCRIPTION:
 build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
-	  export CC=$(CCOMP); \
-	  export CFLAGS="$(CMFLAGS)"; \
           cd $(SOURCE_DIR); \
           $(CCOMP) -o FastTreeMP $(CFLAGS) $(CMPFLAGS)  FastTree.c $(LDFLAGS); \
           $(CCOMP) -o FastTree $(CFLAGS)  FastTree.c $(LDFLAGS) \
