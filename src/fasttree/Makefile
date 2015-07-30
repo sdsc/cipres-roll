@@ -53,8 +53,6 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 # 
 # @Copyright@
-#
-# $Log$
 
 REDHAT.ROOT = $(CURDIR)/../../
 
@@ -66,20 +64,16 @@ include $(SDSCDEVEL)/Rules.mk
 CFLAGS =  -DUSE_DOUBLE -O3 -finline-functions -funroll-loops -Wall 
 CMPFLAGS = -DOPENMP -fopenmp
 LDFLAGS = -lm
-CCOMP = gcc
 ifeq ("$(COMPILERNAME)", "intel")
-  CCOMP = icc
   CFLAGS = -DUSE_DOUBLE -O3  -finline-functions -funroll-loops -Wall -xHost
   CMPFLAGS = -DOPENMP -openmp
-endif
-ifeq ("$(COMPILERNAME)", "pgi")
-  CCOMP = pgcc
+else ifeq ("$(COMPILERNAME)", "pgi")
   CFLAGS = -DUSE_DOUBLE -O3  -Mautoinline -Munroll -Winform=inform
   CMPFLAGS = -DOPENMP -mp
 endif
 
 
-$(NAME).spec: DESCRIPTION
+$(NAME).spec: DESCRIPTION LICENSE
 
 DESCRIPTION:
 	$(MODULE_LOAD_CC); \
@@ -88,12 +82,17 @@ DESCRIPTION:
 	  $(DESCRIBE_CC); \
 	) > $@
 
+LICENSE: $(SRC_DIRS)
+	grep -C1 Copyright $(SOURCE_DIR)/FastTree.c > $(SOURCE_DIR)/COPYRIGHT
+	$(CHECK_LICENSE_FILES)
+	echo University of California > $@
+
 build: $(SRC_DIRS)
 	( \
 	  $(MODULE_LOAD_CC); \
-          cd $(SOURCE_DIR); \
-          $(CCOMP) -o FastTreeMP $(CFLAGS) $(CMPFLAGS)  FastTree.c $(LDFLAGS); \
-          $(CCOMP) -o FastTree $(CFLAGS)  FastTree.c $(LDFLAGS) \
+	  cd $(SOURCE_DIR); \
+	  $(CC) -o FastTreeMP $(CFLAGS) $(CMPFLAGS) FastTree.c $(LDFLAGS); \
+	  $(CC) -o FastTree $(CFLAGS)  FastTree.c $(LDFLAGS) \
 	)
 	@echo "::: Package $(NAME) build complete :::"
 
@@ -101,8 +100,10 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)/bin
 	( \
 	  cd $(SOURCE_DIR) ; \
-	  cp FastTree FastTreeMP  $(ROOT)/$(PKGROOT)/bin \
+	  cp FastTree FastTreeMP $(ROOT)/$(PKGROOT)/bin \
 	)
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
+
 clean::
-	rm -rf $(SOURCE_DIR) _arch DESCRIPTION
+	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
