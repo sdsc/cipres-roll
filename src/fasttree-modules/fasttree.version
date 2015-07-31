@@ -1,3 +1,2 @@
 #%Module1.0
-setenv FASTTREE_HOME /opt/fasttree
-prepend-path PATH /opt/fasttree/bin
+set ModulesVersion "VERSION"
