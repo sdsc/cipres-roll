@@ -14,15 +14,6 @@ my $output;
 
 my $TESTFILE = 'tmpcipres';
 
-open(OUT, ">$TESTFILE.sh");
-print OUT <<END;
-  mkdir $TESTFILE.dir
-  cd $TESTFILE.dir
-  curl http://www.microbesonline.org/fasttree/downloads/aa250.tar.gz | tar zxv COG1960.sim.p COG1960.sim.rose COG1960.sim.trim.tree
-  module load fasttree
-  FastTree COG1960.sim.p
-END
-
 # cipres-common.xml
 if($appliance =~ /$installedOnAppliancesPattern/) {
   ok($isInstalled, 'cipres installed');
@@ -32,8 +23,8 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 SKIP: {
 
   skip 'cipres not installed', 4 if ! $isInstalled;
-  $output = `/bin/bash $TESTFILE.sh 2>&1`;
-  like($output, qr/N63:0.476665887/, 'FastTree test run');
+  $output = `module load fasttree; FastTree 2>&1`;
+  like($output, qr/FastTree version \d+(\.\d+)*/, 'FastTree test run');
   `/bin/ls /opt/modulefiles/applications/fasttree/[0-9]* 2>&1`;
   ok($? == 0, 'fasttree module installed');
   `/bin/ls /opt/modulefiles/applications/fasttree/.version.[0-9]* 2>&1`;
