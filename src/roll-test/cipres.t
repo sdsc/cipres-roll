@@ -23,8 +23,8 @@ if($appliance =~ /$installedOnAppliancesPattern/) {
 SKIP: {
 
   skip 'cipres not installed', 4 if ! $isInstalled;
-  $output = `module load fasttree; FastTree 2>&1`;
-  like($output, qr/FastTree version \d+(\.\d+)*/, 'FastTree test run');
+  $output = `module load fasttree; FastTree < /dev/null 2>&1`;
+  like($output, qr/FastTree version \d+(\.\d+)*/i, 'FastTree test run');
   `/bin/ls /opt/modulefiles/applications/fasttree/[0-9]* 2>&1`;
   ok($? == 0, 'fasttree module installed');
   `/bin/ls /opt/modulefiles/applications/fasttree/.version.[0-9]* 2>&1`;
