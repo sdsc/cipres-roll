@@ -69,7 +69,7 @@ CMPFLAGS = -DOPENMP -fopenmp
 LDFLAGS = -lm
 ifeq ("$(COMPILERNAME)", "intel")
   CFLAGS = -DUSE_DOUBLE -O3  -finline-functions -funroll-loops -Wall -xHost
-  CMPFLAGS = -DOPENMP -openmp
+  CMPFLAGS = -DOPENMP -qopenmp
 else ifeq ("$(COMPILERNAME)", "pgi")
   CFLAGS = -DUSE_DOUBLE -O3  -Mautoinline -Munroll -Winform=inform
   CMPFLAGS = -DOPENMP -mp
