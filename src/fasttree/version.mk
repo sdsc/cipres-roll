@@ -5,7 +5,7 @@ COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
 NAME           = sdsc-fasttree
 VERSION        = 2.1.8
-RELEASE        = 2
+RELEASE        = 3
 
 SRC_SUBDIR     = fasttree
 
@@ -20,3 +20,4 @@ PKGROOT        = /opt/fasttree
 TAR_GZ_PKGS    = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.PREFIX     = $(PKGROOT)
